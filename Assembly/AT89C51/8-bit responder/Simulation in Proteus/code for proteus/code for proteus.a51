@@ -32,11 +32,12 @@ MAIN:
     CLR GND_MATRIX_KEY          ; 提供矩阵键盘低电平
     CLR F0                      ; 约定的检测标志位
 RESET:                  ; 复位
+	CLR P3.6                    ; 无源蜂鸣器关
     CLR TR1                     ; 关闭时钟
     ACALL INIT_TIMER            ; 定时器初始化
     ACALL TIME_SET              ; 设置抢答时间
 START:                  ; 启动
-    LCALL BEEP_HALF_SECOND      ; 启动警示
+    LCALL BEEP_HALF_SECOND      ; 启动提示
     SETB TR1                    ; 启动倒计时
     ACALL SCAN_KEY              ; 开始按键扫描
     JBC F0, RESET               ; F0=1，则为手动复位，转RESET
@@ -266,14 +267,12 @@ LCD:                        ; 显示当前剩余时间和选手编号
 LCD_ROW1:               ; 第一行开头，80H，用于显示倒计时时间
     ACALL INIT_LCD_CLEAR    ; LCD清屏、初始化
     MOV R0, #80H            
-    ACALL F_BUSY
     ACALL W_CONTROL         ; 第一行偏移地址（0——27H）第二行偏移地址（40-67h）
     MOV B, #02H             ; 配合定义的TABLE序列
     MOV A, R5               ; 取出R5中保存的当前剩余时间
     MUL AB
     MOVC A, @A+DPTR
     MOV R1, A               ; R1存放数据
-    ACALL F_BUSY
     ACALL W_DATA
     MOV B, #02H
     MOV A, R5
@@ -281,19 +280,16 @@ LCD_ROW1:               ; 第一行开头，80H，用于显示倒计时时间
     INC A                   ; 指向下一个单元
     MOVC A, @A+DPTR
     MOV R1, A
-    ACALL F_BUSY
     ACALL W_DATA
     RET
 
 LCD_ROW2:               ; 第二行开头，80H+40H=0C0H. 用于显示竞答选手编号
     ACALL INIT_LCD          ; LCD初始化
     MOV R0, #0C0H           
-    ACALL F_BUSY
     ACALL W_CONTROL
     MOV A, R2
     ADD A, #30H             ; 转换为ASCII码
-    MOV R1, A
-    ACALL F_BUSY              
+    MOV R1, A            
     ACALL W_DATA
     RET    
 
@@ -319,7 +315,7 @@ INIT_LCD:               ; LCD显示不清零的初始化
     ACALL W_CONTROL
     RET
 
-W_CONTROL:                                        
+W_CONTROL:                                   
     CLR RS              
     CLR RW              ; RS=RW=0，写命令
     CLR E
@@ -332,22 +328,14 @@ W_CONTROL:
 W_DATA:                 ; 写数据函数，调用它之前先把数据放到R1中                         
     SETB RS             
     CLR RW              ; 写数据
-    ACALL DELAY_1
-    MOV P0, R1          
+	SETB E	
+    MOV P0, R1 
+	ACALL DELAY_1
     CLR E               ; 下跳沿触发写入
-    RET
-
-F_BUSY:                         ; 子程序功能：检测忙状态位D7
-    CLR RS
-    SETB RW                     ; 读LCD状态
-    SETB E
-    ACALL DELAY_1
-LOOP_F_BUSY:           
-    JB BF, LOOP_F_BUSY          ; 忙标志为0时才可传输信息
     RET
 ;**************************************************************************;
 BEEP_HALF_SECOND:   ; 蜂鸣器响0.5s
-    CLR P3.6            ; 蜂鸣器开
+    SETB P3.6            ; 蜂鸣器开
     MOV R3, #50             
 L1_BEEP:                
     MOV R6, #100      
@@ -357,7 +345,7 @@ L3_BEEP:
     DJNZ R7, L3_BEEP
     DJNZ R6, L2_BEEP
     DJNZ R3, L1_BEEP
-    SETB P3.6           ; 蜂鸣器关
+    CLR P3.6           ; 蜂鸣器关
     RET
 ;**************************************************************************;
 DELAY_0:                ; 延时15ms

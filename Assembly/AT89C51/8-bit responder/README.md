@@ -1,7 +1,7 @@
 # 8-bit responder
 
 This is my curriculum project of MCS-51 Microcontroller.
-code has been verified.
+And a simulation file has been placed together.
 
 ---
 
