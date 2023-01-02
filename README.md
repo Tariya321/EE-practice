@@ -19,4 +19,4 @@ No matter what, you can clone them at your personal computer and try to run thes
 
 ## Contact me
 
-<Hongzhilian@outlook.com>
+<tariya@yeah.net>
