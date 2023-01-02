@@ -1,6 +1,6 @@
 # A Way to Practice Assembly Language In WinXP system
 
-> This text takes aim at showing a user-friendly method to create a environment in your laptop.
+> This text takes aim at showing a user-friendly method to create a 32-bit environment in your laptop.
 
 ## Installation
 
