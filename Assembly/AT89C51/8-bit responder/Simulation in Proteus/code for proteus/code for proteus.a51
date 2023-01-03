@@ -32,7 +32,7 @@ MAIN:
     CLR GND_MATRIX_KEY          ; 提供矩阵键盘低电平
     CLR F0                      ; 约定的检测标志位
 RESET:                  ; 复位
-	CLR P3.6                    ; 无源蜂鸣器关
+	SETB P3.6                   ; 蜂鸣器关
     CLR TR1                     ; 关闭时钟
     ACALL INIT_TIMER            ; 定时器初始化
     ACALL TIME_SET              ; 设置抢答时间
@@ -332,7 +332,7 @@ W_DATA:                 ; 写数据函数，调用它之前先把数据放到R1�
     RET
 ;**************************************************************************;
 BEEP_HALF_SECOND:   ; 蜂鸣器响0.5s
-    SETB P3.6            ; 蜂鸣器开
+    CLR P3.6            ; 蜂鸣器开
     MOV R3, #50             
 L1_BEEP:                
     MOV R6, #100      
@@ -342,7 +342,7 @@ L3_BEEP:
     DJNZ R7, L3_BEEP
     DJNZ R6, L2_BEEP
     DJNZ R3, L1_BEEP
-    CLR P3.6           ; 蜂鸣器关
+    SETB P3.6           ; 蜂鸣器关
     RET
 ;**************************************************************************;
 DELAY_0:                ; 延时15ms
