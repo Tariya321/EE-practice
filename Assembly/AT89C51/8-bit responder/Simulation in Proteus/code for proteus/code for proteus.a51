@@ -37,13 +37,12 @@ RESET:                  ; 复位
     ACALL INIT_TIMER            ; 定时器初始化
     ACALL TIME_SET              ; 设置抢答时间
 START:                  ; 启动
-    LCALL BEEP_HALF_SECOND      ; 启动提示
+    ACALL BEEP_HALF_SECOND      ; 启动提示
     SETB TR1                    ; 启动倒计时
     ACALL SCAN_KEY              ; 开始按键扫描
     JBC F0, RESET               ; F0=1，则为手动复位，转RESET
-    LCALL BEEP_HALF_SECOND                    
-    AJMP RESET                  ; 否则为无人响应，蜂鸣器响0.5s后自动复位  
-    SJMP $
+    ACALL BEEP_HALF_SECOND                    
+    AJMP RESET                  ; 否则为无人响应，蜂鸣器响0.5s后自动复位
 ;**************************************************************************;
 INIT_TIMER:
     MOV TMOD, #10H              ; 使用定时器1，选择工作方式1定时
@@ -58,8 +57,8 @@ INIT_TIMER:
 TIME_SET:
 CLEAR: 
     MOV R5, #00H                    ; R5清零
+	LCALL LCD_ROW1
 L1_TIME_SET:   
-    LCALL LCD_ROW1                  ; LCD第一行显示当前设置的时间
     JBC F0, BACK_FROM_TIME_SET      ; F0有效，则退出时间设置，启动
     JNB KEY_TIME_SET, RECONFIRM_TIME_SET            ; 若检测到时间设置按键按下，则延时再确认
     AJMP L1_TIME_SET
@@ -70,8 +69,11 @@ RECONFIRM_TIME_SET:
 RECONFIRM_TURE_TIME_SET:  
     JNB KEY_TIME_SET, $             ; 松开按键后才进行下一步操作
     INC R5                          ; 每检测一次有效按下，R5加1
-    CJNE R5, #31, L1_TIME_SET       ; R5超过30则清零
+    CJNE R5, #31, DISP_THEN_TIME_SET       ; R5超过30则清零
     AJMP CLEAR
+DISP_THEN_TIME_SET:
+    LCALL LCD_ROW1                  ; LCD第一行显示当前设置的时间
+    AJMP L1_TIME_SET
 BACK_FROM_TIME_SET:
     RET         
 ;*************************************************************************;
@@ -95,7 +97,6 @@ K0:
     SJMP NO_DEAL0
 DEAL0:
     ACALL DEAL_TIME
-    ACALL LCD_ROW1              ; 显示倒计时
     CJNE R5, #00H, NO_DEAL0
     AJMP BACK_FROM_K0           ; 若R5=0，则表示无人应答，应退出子程序，警报后复位
 NO_DEAL0:      
@@ -114,8 +115,7 @@ K1:
     JBC TF1, DEAL1      
     SJMP NO_DEAL1
 DEAL1:
-    ACALL DEAL_TIME
-    ACALL LCD_ROW1        
+    ACALL DEAL_TIME    
     CJNE R5, #00H, NO_DEAL1
     AJMP BACK_FROM_K1         
 NO_DEAL1:  
@@ -134,8 +134,7 @@ K2:
     JBC TF1, DEAL2             
     SJMP NO_DEAL2
 DEAL2:
-    LCALL DEAL_TIME
-    ACALL LCD_ROW1         
+    LCALL DEAL_TIME       
     CJNE R5, #00H, NO_DEAL2
     AJMP BACK_FROM_K2        
 NO_DEAL2:
@@ -155,7 +154,6 @@ K3:
     SJMP NO_DEAL3
 DEAL3:
     ACALL DEAL_TIME
-    ACALL LCD_ROW1     
     CJNE R5, #00H, NO_DEAL3
     AJMP BACK_FROM_K3    
 NO_DEAL3:
@@ -174,8 +172,7 @@ K4:
     JBC TF1, DEAL4          
     SJMP NO_DEAL4
 DEAL4:
-    ACALL DEAL_TIME
-    ACALL LCD_ROW1     
+    ACALL DEAL_TIME  
     CJNE R5, #00H, NO_DEAL4
     AJMP BACK_FROM_K4  
 NO_DEAL4:
@@ -194,8 +191,7 @@ K5:
     JBC TF1, DEAL5             
     SJMP NO_DEAL5
 DEAL5:
-    ACALL DEAL_TIME
-    ACALL LCD_ROW1        
+    ACALL DEAL_TIME  
     CJNE R5, #00H, NO_DEAL5
     AJMP BACK_FROM_K5  
 NO_DEAL5:
@@ -214,8 +210,7 @@ K6:
     JBC TF1, DEAL6     
     SJMP NO_DEAL6
 DEAL6:
-    ACALL DEAL_TIME
-    ACALL LCD_ROW1        
+    ACALL DEAL_TIME    
     CJNE R5, #00H, NO_DEAL6
     AJMP BACK_FROM_K6      
 NO_DEAL6:
@@ -234,8 +229,7 @@ K7:
     JBC TF1, DEAL7              ; 查询到中断标志位有效，则清除标志位后跳转
     AJMP NO_DEAL7
 DEAL7:
-    ACALL DEAL_TIME
-    ACALL LCD_ROW1             
+    ACALL DEAL_TIME          
     CJNE R5, #00H, NO_DEAL7
     AJMP BACK_FROM_K7         
 NO_DEAL7:
@@ -250,12 +244,15 @@ DISP_7:
 BACK_FROM_K7:
     RET
 ;**************************************************************************;
-DEAL_TIME:
+DEAL_TIME:          ; 刷新倒计时并重装载
     MOV TH1, #3CH
-    MOV TL1, #0AFH               ; 重装载
+    MOV TL1, #0AFH                  ; 重装载
     DJNZ R4, BACK_FROM_DEAL_TIME
+	CLR TR1
     MOV R4, #14H
-    DEC R5
+	DEC R5
+	ACALL LCD_ROW1                  ; 刷新倒计时
+	SETB TR1
 BACK_FROM_DEAL_TIME: 
     RET
 ;**************************************************************************;
