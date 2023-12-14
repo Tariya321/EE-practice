@@ -21,7 +21,9 @@ For better understanding, here is a short line that put them in order.
 4. debug
 
 ## Practice by yourself
+
 source code here:
+
 ```assembly
 assume cs:codesg
 
@@ -44,6 +46,7 @@ codesg ends
 
 end
 ```
+
 By running in single step, it should be noticed that values of some registers are changed. 
 > Warnings can be ignored, such as ``Warning L4021: no stack segment``
 
