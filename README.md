@@ -15,8 +15,14 @@ And all the projects are designed by myself and have been testified to be correc
 - Assembly
 - $\LaTeX$
 - VerilogHDL
+- Hspice
 
 No matter what, you can clone them at your personal computer and try to run these projects by yourself, which maybe quite interesting!
+
+## items provided
+
+- source code
+- circuit schematics
 
 ## Contact me
 
