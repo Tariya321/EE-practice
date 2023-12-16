@@ -1,29 +1,27 @@
 # EE-practice
 
-Welcome to my homepage!:smile:
+>Welcome to my homepage!:smile:
 
-
----
 
 ## What is EE-practice?
 
-This repository will store all the projects that I've done in EE major of HFUT.
-And all the projects are designed by myself and have been testified to be correct in my environment.
+This repository will store all the code-related projects that I've done in EE major of HFUT.
+And all the projects are designed by myself(or with my teammates) and have been testified to be correct in specific environment.
 
 ## Projects on the list
 
 - Assembly
-- $\LaTeX$
-- VerilogHDL
+- Verilog HDL
 - Hspice
 
 No matter what, you can clone them at your personal computer and try to run these projects by yourself, which maybe quite interesting!
 
-## items provided
+## Items provided
 
-- source code
+- source codes
 - circuit schematics
 
-## Contact me
+## Contact
 
-<tariya@yeah.net>
+you can send email to this account: <tariya@yeah.net>
+Welcome for communicate.
