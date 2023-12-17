@@ -1,6 +1,6 @@
 # EE-practice
 
->Welcome to my homepage!:smile:
+>Welcome to my homepage! :smile:
 
 
 ## What is EE-practice?
@@ -24,4 +24,4 @@ No matter what, you can clone them at your personal computer and try to run thes
 ## Contact
 
 you can send email to this account: <tariya@yeah.net>
-Welcome for communicate.
+Welcome for communication.
