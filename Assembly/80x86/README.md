@@ -6,16 +6,16 @@
 
 For  this curriculum, do some practice after class may be a better way to obtain what you have just learnt. In before lessons, a microprocessor called Pentium was introduced, and it's a **32-bit** system. So, the problem is how to create such a environment where 32-bit instruction is supported.
 
-A solution based on **virtual machine** is proposed in this short guide. WinXP is 32-bit system launched by Inter Inc. in 2001, and that's exactly what we need. Actually, the installation packages of the system is not supported in Microsoft official website, but we can find them in below: **<https://msdn.itellyou.cn>**
+A solution based on **virtual machine** is proposed in this short guide. WinXP is a 32-bit system launched by *Inter* Inc. in 2001, and that's exactly what we need. Actually, the installation packages of this system is not supported for anymore in Microsoft official website, but we can find them in below: **<https://msdn.itellyou.cn>**
 
-The next question is: where to run this system? Using virtual machine may be a good solver. For example, **VMware** is a wonderful option for us. Find the package which is free to use should not be a hard-takling problem for the smart you!
+The next question is: where to run this system? Using virtual machine may be a good solution incase not all of us is familiar with system installation. For example, **VMware** is a wonderful option for us. Find the package which is free to use should not be a hard-takling problem for the smart you!
 
-After installing environment, another question is how to compile your code file.  Assembler is a program that will compile your code and transfer to machine language, which is executable for your computer. For most of users, **DOSbox** or **MASM** both are easy to use, and my choice is MASM (just for habit).
+After installing the mentioned environment, another question is how to compile your code file.  Assembler is a program that will compile your code and transfer to machine language, which is executable for your computer. For most of users, **DOSbox** or **MASM** both are easy to use, and my choice is MASM(choose one in your favor).
 
 Now we can write a code file end with suffix **.asm**, then build and link it, and the program is going to run!
 
 For better understanding, here is a short line that put them in order.
-1. write
+1. write a .asm file
 2. build by MASM.exe
 3. link by link.exe
 4. debug
