@@ -24,6 +24,7 @@ And my goal is to estimate a freely platform where both of us can discuss and le
   - Assembly
   - Verilog HDL
   - Hspice
+  - 4_order_amplifier
 - Items provided
   - source codes
   - circuit schematics
